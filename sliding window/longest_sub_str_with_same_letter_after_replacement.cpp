@@ -1,25 +1,58 @@
-class Solution {
-public:
-    int characterReplacement(string s, int k) {
-        vector<int> freq(26, 0);
+// class Solution {
+// public:
+//     int characterReplacement(string s, int k) {
+//         vector<int> freq(26, 0);
 
-        int left = 0;
-        int maxFreq = 0;
-        int ans = 0;
+//         int left = 0;
+//         int maxFreq = 0;
+//         int ans = 0;
 
-        for (int right = 0; right < s.size(); right++) {
-            freq[s[right] - 'A']++;
+//         for (int right = 0; right < s.size(); right++) {
+//             freq[s[right] - 'A']++;
 
-            maxFreq = max(maxFreq, freq[s[right] - 'A']);
+//             maxFreq = max(maxFreq, freq[s[right] - 'A']);
 
-            while ((right - left + 1) - maxFreq > k) {
-                freq[s[left] - 'A']--;
-                left++;
-            }
+//             while ((right - left + 1) - maxFreq > k) {
+//                 freq[s[left] - 'A']--;
+//                 left++;
+//             }
 
-            ans = max(ans, right - left + 1);
-        }
+//             ans = max(ans, right - left + 1);
+//         }
 
-        return ans;
-    }
-};
+//         return ans;
+//     }
+// };
+
+
+// int find(vector<int> &a)
+// {
+//    int maxc=-1;
+//    for(int i=0;i<256;i++)
+//    maxc=max(maxc,a[i]);
+//    return maxc;
+// }
+   int characterReplacement(string s, int k) {
+       int n=s.size();
+       vector<int> f(256,0);
+       int low=0,high=0,res=INT_MIN;
+       for(high=0;high<n;high++)
+       {
+           f[s[high]]++;
+           int maxcnt=find(f);
+           int len=high-low+1;
+           int diff=len-maxcnt;
+           while(diff>k)
+           {
+               f[s[low]]--;
+               low++;
+               maxcnt=find(f);
+               len=high-low+1;
+               diff=len-maxcnt;
+           }
+           len=high-low+1;
+           res=max(res,len);
+       }
+       return res;
+   }
+
